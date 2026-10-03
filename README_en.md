@@ -24,7 +24,7 @@ Four bottom tabs: **Home / Apps / Processes / Settings**, with dark / light / fo
 
 | Home | Apps | Processes | Settings |
 | --- | --- | --- | --- |
-| ![Home](home.jpg) | ![Apps](app.jpg) | ![Processes](settings.jpg) | ![Settings](settings.jpg) |
+| ![Home](home.jpg) | ![Apps](app.jpg) | ![Processes](processes.jpg) | ![Settings](settings.jpg) |
 
 - **Home** — activation status, Bento overview (guarded / running / message keep-alive), 24-hour survival chart (tap an app to drill down), guard event timeline
 - **Apps** — search and tick target apps; each shows real uptime plus kill / relaunch counters
