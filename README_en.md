@@ -96,7 +96,7 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 
 ## Changelog
 
-### v3.3.0 (versionCode 4000)
+### v3.3.0 (versionCode 3)
 
 - **Brand-new UI**: reworked into a complete app with four bottom tabs — Home / Apps / Processes / Settings.
 - **Home dashboard**: activation status, Bento overview, **24-hour survival chart** (custom-drawn line
@@ -107,7 +107,7 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 - **Config backup & restore**, **persistent notification**, **4×1 widget**, **dark mode**.
 - **Page keep-alive**: new switch that fakes the process as foreground to stop Activity recycling.
 - **Fix**: guarded apps could not be installed or updated (install and root/shell callers are now exempted).
-- Version codes are now tiered: debug in the 3000s, release in the 4000s.
+- Version scheme reset to the compact "versionCode-versionName" style (**3-3.3.0**); users who installed the 4000/4001 test builds need to reinstall once.
 
 ### v3.2.2 (versionCode 33)
 
