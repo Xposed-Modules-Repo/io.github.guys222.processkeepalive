@@ -1,12 +1,10 @@
 简体中文 | [English](README_en.md)
 
+基于 **LSPosed / Xposed** 的 Android 后台保活模块，主要面向 **LineageOS（AOSP 系）**。它在 `system_server` 进程内部拦截系统的杀进程行为，让选定的应用不被低内存杀手（LMK）或「强行停止」杀掉。
+
 # 进程保活（ProcessKeepAlive）
 
 > 项目主页：https://github.com/Guys222/ProcessKeepAlive
-
-基于 **LSPosed / Xposed** 的 Android 后台保活模块，主要面向 **LineageOS（AOSP 系）**。
-它在 `system_server` 进程内部拦截系统的杀进程行为，让选定的应用不被低内存杀手（LMK）
-或「强行停止」杀掉。
 
 > ⚠️ 仅限个人设备、自己安装的应用使用。保活会让应用持续占用内存与电量，请勿用于追踪、监控他人设备。
 
