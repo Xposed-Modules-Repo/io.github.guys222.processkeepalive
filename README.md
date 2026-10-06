@@ -1,6 +1,6 @@
-简体中文 | [English](README_en.md)
+基于 **LSPosed / Xposed** 的 Android 后台保活模块，防止你勾选的应用被系统杀进程（主要面向 LineageOS / AOSP 系）。
 
-基于 **LSPosed / Xposed** 的 Android 后台保活模块，主要面向 **LineageOS（AOSP 系）**。它在 `system_server` 进程内部拦截系统的杀进程行为，让选定的应用不被低内存杀手（LMK）或「强行停止」杀掉。
+简体中文 | [English](README_en.md)
 
 # 进程保活（ProcessKeepAlive）
 
