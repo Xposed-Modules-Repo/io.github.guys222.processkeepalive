@@ -11,7 +11,7 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-`ProcessKeepAlive-v3.3.0-release.apk` from [Releases](https://github.com/Guys222/ProcessKeepAlive/releases)
+`ProcessKeepAlive-v3.4.3-release.apk` from [Releases](https://github.com/Guys222/ProcessKeepAlive/releases)
 (signed with the project's own keystore, installs over previous builds).
 
 After enabling the module you **must** tick the "**System framework (android)**" scope in LSPosed — all hooks are injected into `system_server`, and nothing works without it.
@@ -95,6 +95,10 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 ```
 
 ## Changelog
+
+### v3.4.3 (build 4017)
+
+- **Fixed desktop icon hiding**: with "Settings → Desktop → Hide desktop icon" on, the icon now fully disappears and is non-clickable (no leftover icon, no jump to App info); while hidden, dial `*#*#888#*#*` to relaunch the app (no reboot needed); un-hiding restores the icon immediately and clickable.
 
 ### v3.3.0 (versionCode 3)
 

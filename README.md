@@ -12,7 +12,7 @@
 
 在 LSPosed Manager 中搜索「进程保活」安装，或从
 [Releases](https://github.com/Guys222/ProcessKeepAlive/releases) 下载
-`ProcessKeepAlive-v3.3.0-release.apk`（已用项目专用 keystore 签名，可直接覆盖安装）。
+`ProcessKeepAlive-v3.4.3-release.apk`（已用项目专用 keystore 签名，可直接覆盖安装）。
 
 启用后**必须**在 LSPosed 中把作用域勾上「**系统框架（android）**」——所有钩子都注入
 `system_server`，不勾这一项模块不工作。
@@ -88,6 +88,10 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # 值越低越不容易被杀
 ```
 
 ## 更新日志
+
+### v3.4.3（build 4017）
+
+- **修复桌面图标隐藏问题**：「设置 → 桌面 → 隐藏桌面图标」开启后，桌面图标彻底消失、不可点击（不再残留旧图标、点击不再跳应用信息页）；隐藏后拨号盘输入 `*#*#888#*#*` 直接唤起 App（无需重启）；取消隐藏后图标立即恢复、可正常点击打开。
 
 ### v3.4.3（build 4014）
 
