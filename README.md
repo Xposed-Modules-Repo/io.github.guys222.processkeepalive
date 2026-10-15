@@ -11,7 +11,7 @@
 ## 安装
 
 在 LSPosed Manager 中搜索「进程保活」安装，或从
-[Releases](https://github.com/Guys222/ProcessKeepAlive/releases) 下载
+[Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases) 下载
 `ProcessKeepAlive-v3.4.3-release.apk`（已用项目专用 keystore 签名，可直接覆盖安装）。
 
 启用后**必须**在 LSPosed 中把作用域勾上「**系统框架（android）**」——所有钩子都注入

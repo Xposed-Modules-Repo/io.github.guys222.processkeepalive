@@ -11,7 +11,7 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-`ProcessKeepAlive-v3.4.3-release.apk` from [Releases](https://github.com/Guys222/ProcessKeepAlive/releases)
+`ProcessKeepAlive-v3.4.3-release.apk` from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
 (signed with the project's own keystore, installs over previous builds).
 
 After enabling the module you **must** tick the "**System framework (android)**" scope in LSPosed — all hooks are injected into `system_server`, and nothing works without it.
