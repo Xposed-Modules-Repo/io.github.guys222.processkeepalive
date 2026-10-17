@@ -6,13 +6,16 @@
 
 > 项目主页：https://github.com/Guys222/ProcessKeepAlive
 
+> 🐛 **问题反馈**：本仓库（LSPosed 收录库）按官方策略未开放 Issues，**请到
+> [主仓库 Issues](https://github.com/Guys222/ProcessKeepAlive/issues) 提问或反馈**，我会尽快回复。
+
 > ⚠️ 仅限个人设备、自己安装的应用使用。保活会让应用持续占用内存与电量，请勿用于追踪、监控他人设备。
 
 ## 安装
 
 在 LSPosed Manager 中搜索「进程保活」安装，或从
-[Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases) 下载
-`ProcessKeepAlive-v3.4.3-release.apk`（已用项目专用 keystore 签名，可直接覆盖安装）。
+[Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases) 下载最新 APK
+（如 `PKA-v3.4.4-build4025.apk`，已用项目专用 keystore 签名，可直接覆盖安装）。
 
 启用后**必须**在 LSPosed 中把作用域勾上「**系统框架（android）**」——所有钩子都注入
 `system_server`，不勾这一项模块不工作。

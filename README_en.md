@@ -4,6 +4,10 @@
 
 > Project home: https://github.com/Guys222/ProcessKeepAlive
 
+> 🐛 **Feedback / Issues**: this repo (the LSPosed module listing) has Issues disabled per the
+> listing's policy — **please post on the
+> [main repo's Issues](https://github.com/Guys222/ProcessKeepAlive/issues)**. Replies are usually fast.
+
 An LSPosed / Xposed-based Android background keep-alive module, mainly targeting **LineageOS (AOSP-based)** ROMs. It hooks into `system_server` to intercept the system's kill behaviour, so selected apps are not killed by the Low Memory Killer (LMK) or by "Force stop".
 
 > ⚠️ For personal devices and your own apps only. Keep-alive keeps apps occupying memory and battery — do not use it to track or monitor others' devices.
@@ -11,7 +15,7 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-`ProcessKeepAlive-v3.4.3-release.apk` from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
+the latest APK (e.g. `PKA-v3.4.4-build4025.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
 (signed with the project's own keystore, installs over previous builds).
 
 After enabling the module you **must** tick the "**System framework (android)**" scope in LSPosed — all hooks are injected into `system_server`, and nothing works without it.
