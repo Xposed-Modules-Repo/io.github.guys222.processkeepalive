@@ -96,6 +96,39 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 
 ## Changelog
 
+### v3.4.4 (build 4025)
+
+**Cloned-app (dual app) support completed**
+
+- **Launcher-entry scan channel**: cloned apps no longer need to be running — installed but
+  never-launched clones are listed and can be enabled directly.
+- **Fixed "cloned apps not found"** (three causes): user enumeration skipping pre-created clone
+  users, ROMs hiding the clone user, clone users wrongly excluded by `isCloneProfile`.
+- **Separate "Show system apps" switch per tab** (main / clone); clone tab defaults to
+  third-party clones only.
+- Clone rows now use the real system flag instead of approximating from the main-user package.
+
+**Keep-alive strength**
+
+- **Page keep-alive "triple safeguard"**: fake foreground + block activities from entering the
+  destroy queue (only when obscured — pressing Back still exits normally) + suppress the system's
+  memory-reclaim signal.
+- **Stamp at process birth**: persistent / core markers are written when a process record is created,
+  closing the window before the system first computes its priority.
+
+**Performance** (addressing "phone got laggy after installing the module")
+
+- Heartbeat scan reads the in-memory process list instead of walking /proc every 4 seconds;
+- Full process scan uses an adaptive interval (faster machines refresh sooner, down to 2s);
+- Clone scan is on-demand (2-minute fallback + immediate scan on pull-to-refresh);
+- High-frequency hook path: confirmed non-target processes return after a single map lookup.
+
+**Fixes**: long-press copy in Settings, clone scan channels failing each other, clone keys degrading
+to the main package, synthetic memory reclaim conflicting with page keep-alive, config dialog black bar.
+
+- Version 3.4.3 → 3.4.4, versionCode 4024 → 4025; same signature, overwrite install works.
+  Reboot once after updating so the new hooks take effect.
+
 ### v3.4.3 (build 4017)
 
 - **Fixed desktop icon hiding**: with "Settings → Desktop → Hide desktop icon" on, the icon now fully disappears and is non-clickable (no leftover icon, no jump to App info); while hidden, dial `*#*#888#*#*` to relaunch the app (no reboot needed); un-hiding restores the icon immediately and clickable.
