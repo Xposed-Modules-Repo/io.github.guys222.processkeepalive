@@ -4,10 +4,9 @@
 
 # 进程保活（ProcessKeepAlive）
 
-> 项目主页：https://github.com/Guys222/ProcessKeepAlive
-
-> 🐛 **问题反馈**：本仓库（LSPosed 收录库）按官方策略未开放 Issues，**请到
-> [主仓库 Issues](https://github.com/Guys222/ProcessKeepAlive/issues) 提问或反馈**，我会尽快回复。
+> 🐛 **问题反馈**：本仓库（LSPosed 收录库）按官方策略未开放 Issues，**请到公开反馈仓库
+> [ProcessKeepAlive-Issues](https://github.com/Guys222/ProcessKeepAlive-Issues) 提问或反馈**
+> （源码仓库私有维护，不对外开放；Issues 提 Bug，Discussions 提问）。
 
 > ⚠️ 仅限个人设备、自己安装的应用使用。保活会让应用持续占用内存与电量，请勿用于追踪、监控他人设备。
 
