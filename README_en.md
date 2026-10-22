@@ -1,4 +1,4 @@
-[简体中文](README.md) | English
+[简体中文](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/blob/main/README.md) | English
 
 # ProcessKeepAlive (进程保活)
 
