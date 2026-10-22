@@ -1,6 +1,6 @@
 基于 **LSPosed / Xposed** 的 Android 后台保活模块，防止你勾选的应用被系统杀进程（主要面向 LineageOS / AOSP 系）。
 
-简体中文 | [English](README_en.md)
+简体中文 | [English](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/blob/main/README_en.md)
 
 # 进程保活（ProcessKeepAlive）
 
