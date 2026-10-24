@@ -14,7 +14,7 @@
 
 在 LSPosed Manager 中搜索「进程保活」安装，或从
 [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases) 下载最新 APK
-（如 `PKA-v3.4.4-build4030.apk`，已用项目专用 keystore 签名，可直接覆盖安装）。
+（如 `PKA-v3.4.4-build4031.apk`，已用项目专用 keystore 签名，可直接覆盖安装）。
 
 启用后**必须**在 LSPosed 中把作用域勾上「**系统框架（android）**」——所有钩子都注入
 `system_server`，不勾这一项模块不工作。
@@ -90,6 +90,20 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # 值越低越不容易被杀
 ```
 
 ## 更新日志
+
+### v3.4.4（build 4031）
+
+**保活**
+
+- 修复「按 Home 回桌面后自动跳回被保活应用」：撤回对 PAUSED（失去焦点）与窗口可见性的拦截，页面保活只保留「不进入 STOPPING」
+- 效果：可以正常切到桌面，切回来仍是原页面、不重新加载，后台任务不中断
+
+**说明文案**
+
+- 设置页「保活环境」改为「通知与环境」，开头说明这些项只影响通知显示与开机自启，防杀与补拉在系统进程内运行、不依赖它们
+- 逐项补充边界：通知权限、电池优化、常驻通知服务分别影响什么、不影响什么
+- 自启动由「不适用」改为「需确认」
+- 底部结论改为「以上均已就绪」，并注明未通过项不影响防杀与补拉
 
 ### v3.4.4（build 4030）
 
