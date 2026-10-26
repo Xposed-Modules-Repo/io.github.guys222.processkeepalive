@@ -14,7 +14,7 @@
 
 在 LSPosed Manager 中搜索「进程保活」安装，或从
 [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases) 下载最新 APK
-（如 `PKA-v3.4.4-build4031.apk`，已用项目专用 keystore 签名，可直接覆盖安装）。
+（如 `PKA-v3.4.4-build4033.apk`，已用项目专用 keystore 签名，可直接覆盖安装）。
 
 启用后**必须**在 LSPosed 中把作用域勾上「**系统框架（android）**」——所有钩子都注入
 `system_server`，不勾这一项模块不工作。
@@ -90,6 +90,14 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # 值越低越不容易被杀
 ```
 
 ## 更新日志
+
+### v3.4.4（build 4033）
+
+**保活**
+
+- 再次修复「按 Home 回桌面后被自动弹回应用」：撤掉阻止界面状态进入 STOPPING 的拦截
+- 页面保活只保留 addToStopping 一层：界面状态可正常走完，系统不销毁页面，回来仍是原页面
+- 状态与真实可见性保持一致，不再出现「桌面刚出来就被顶掉」
 
 ### v3.4.4（build 4031）
 
