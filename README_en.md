@@ -14,7 +14,7 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-the latest APK (e.g. `PKA-v3.4.4-build4025.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
+the latest APK (e.g. `PKA-v3.4.5-build4095.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
 (signed with the project's own keystore, installs over previous builds).
 
 After enabling the module you **must** tick the "**System framework (android)**" scope in LSPosed — all hooks are injected into `system_server`, and nothing works without it.
@@ -98,6 +98,115 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 ```
 
 ## Changelog
+
+### v3.4.5 (build 4095)
+
+**New features**
+
+- **Three independent relaunch switches**: boot relaunch / post-death relaunch (first line of defence) / polling fallback (second line of defence) can now be toggled separately. Turn all three off and the module only protects processes without ever launching them — for users who want to hand relaunching over to the system or a third-party scheduler
+- **Master switch narrowed in scope**: now a pure module on/off switch, no longer coupled to relaunch behaviour
+- **Activity-fallback relaunch returns to background automatically**: the third relaunch path no longer leaves the target app in the foreground; it is sent back to the background right after launch
+- **Self-probing and caching of reflection paths**: on boot the module probes which AMS / ATMS / RootWindowContainer / Task send-to-back paths actually work on this ROM and caches the result — no rebuild needed for other ROMs
+- **Side-effect disclosure dialog**: enabling the activity fallback now explains up front that it will briefly bring the target to the foreground; it only takes effect after confirmation. Cancelling, pressing Back, or tapping outside all revert the toggle
+- **Diagnostic logging behind a switch**: off by default, enabled on demand when troubleshooting
+- **Live self-test progress**: the self-test dialog now shows phase text and a progress bar with elapsed seconds instead of static text
+- **Failed relaunches are recorded as guard events**: the UI timeline now shows "relaunch failed · line X" instead of failing silently
+
+**Bug fixes**
+
+- **Cold-start relaunch not working**: the relevant service instances were only assigned inside the force-stop hook and were null right after boot, so the first line of defence did nothing; now resolved on demand and cached
+- **Send-to-back failing repeatedly**: three unusable private framework paths were ruled out one by one; `Task.moveTaskToBack(Task)` was confirmed to work
+- **Boot events lost for always-on apps (e.g. WeChat)**: the criterion changed from "did the user tick it" to "does the process actually carry the persistent flag", removing false negatives
+- **Some compatibility paths inevitably fail on Android 17**: that release merged the two framework services into a single class; the module now reads the field directly from the merged class while keeping the old path for older versions
+- **Field lookup hitting an inner class by mistake**: name-based matching could land on a Handler inner class; inner classes are now excluded and a fallback scan was added
+- **Dialog confirm button pushed off-screen**: restored, with height-limited scrolling
+- **Scenario preset chips appearing visually sunken**: geometry aligned between states
+
+### v3.4.4 (build 4033)
+
+**Keep-alive**
+
+- Again fixed "returning to the home screen bounces back to the app": removed the interception that blocked the activity state from entering STOPPING
+- Page keep-alive now keeps only the addToStopping layer: the state machine completes normally, the system does not destroy the page, and returning shows the same page
+- State now matches real visibility, so the launcher no longer gets pushed away right after appearing
+
+### v3.4.4 (build 4031)
+
+**Keep-alive**
+
+- Fixed "pressing Home automatically jumps back to the kept app": removed the interceptions on PAUSED (focus loss) and window visibility; page keep-alive only keeps "do not enter STOPPING"
+- Result: you can switch to the home screen normally and come back to the same page without reloading, with background work uninterrupted
+
+### v3.4.4 (build 4030)
+
+**Stability**
+
+- Fixed system jank and "not responding" prompts during boot and app switching: field lookups now cache success and failure, so each field is reflected only once; the process start marker now uses a field that actually exists
+- Keep-alive settings are no longer cleared when the feature is turned off; re-enabling restores the previous configuration; cloned apps restore their own configuration
+- High-frequency process-exit records are cached; non-target processes are no longer re-parsed
+
+**Diagnostics**
+
+- Runtime logs now go to file: 8 MB per file, one rotated copy kept, ~16 MB total; diagnostic bundles include the last ~2 MB
+- A separator line and version number are written on every boot so issues can be attributed to a boot session
+- Crash snapshots now extract the main thread instead of just the tail of the file
+- Under high system load only stack collection is skipped; logging continues
+
+### v3.4.4 (build 4028)
+
+**Stability**
+
+- Fixed the "batch kill processes" interception returning null, which could crash system processes (and reboot the device in severe cases)
+- Interceptions now return values according to the declared method type, eliminating unboxing exceptions of the same kind
+- Non-kept processes are no longer resolved package name and uid one by one, greatly reducing overhead when the system adjusts priorities
+- Tiers by CPU cores and memory: low-end devices automatically slow down their polling cadence
+
+**Keep-alive**
+
+- Page keep-alive extended to pause, stop and window-invisible paths
+- Added process importance query spoofing (getMyMemoryState / getRunningAppProcesses)
+
+**Push**
+
+- Battery-optimisation whitelist plus standby state set to active, so messages are not delayed during long screen-off periods
+- All "is this app restricted" queries answer "not restricted" so apps do not drop connections on their own
+
+**Network**
+
+- Stalled-download detection reworked into a flow state machine: confirm transfer first, auto-recover ~36 s after traffic drops to zero
+- Wi-Fi high-performance lock now held based on traffic (the previous connection-table approach never took effect on most devices)
+
+**Relaunch**
+
+- Prefers side-effect-free services; backup / migration / media services only as a last resort
+- Opens a window during updates and installs so they no longer conflict
+
+**Diagnostics**
+
+- Diagnostic bundles now include only this module's logs, shrinking from several MB to a few hundred KB
+- System crash snapshots are attached automatically, marked whether they include this module
+- File names include version and export time
+
+### v3.4.4 (build 4027)
+
+**Background network protection reworked**
+
+- Firewall hooks previously never took effect: class names and method names did not match the real AOSP implementation, so rules were never applied. Verified against source and rebuilt as a five-layer defence (policy decision / execution / client funnel / queries / fallback patrol)
+- Added 6 process-kill and freeze paths: batch cleanup, LRU reclaim, process group termination, Android 15+ "no background running", app freezer, and two system pre-checks
+- Added the four self-check channels by which the system tells apps they are restricted (screen on / Doze / metered network / background restricted); now only spoofed for kept targets
+- Page keep-alive now covers state-machine paths: previously only the two "obscured" paths were intercepted; three more entry points were added, while "user-initiated exit is not intercepted" is preserved
+
+**Network and compatibility**
+
+- Stalled-download auto recovery: when an active connection has zero traffic for 32 s, a network recovery event is injected to force the app to rebuild the connection
+- Wi-Fi high-performance lock: held while networked, released when idle
+- Fixed trimSuppress being wrongly reported "unsupported" on Android 17: class resolution now requires "class present and method present", with fallback classes
+
+**Performance**
+
+- High-frequency paths use the process cache: non-target processes return from one table lookup instead of repeated reflection
+- Added device tiering (CPU cores + memory) to auto-adjust heartbeat and patrol frequency
+- VMA watch disabled by default on low-end devices; process lookup now uses bookkeeping, cutting 900 file reads down to 3
 
 ### v3.4.4 (build 4025)
 
