@@ -14,7 +14,7 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-the latest APK (e.g. `PKA-v3.5.0-build4231.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
+the latest APK (e.g. `PKA-v3.5.0-build4232.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
 (signed with the project's own keystore, installs over previous builds).
 
 After enabling the module you **must** tick the "**System framework (android)**" scope in LSPosed — all hooks are injected into `system_server`, and nothing works without it.
@@ -99,7 +99,7 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 
 ## Changelog
 
-### v3.5.0 (build 4231)
+### v3.5.0 (build 4232)
 **New features**
 
 - **Per-app overrides for the three relaunch lines**: boot relaunch / post-death relaunch / polling fallback can now be toggled separately for each app. Apps you never touched keep following the global default. Cloned and main instances are fully independent
@@ -109,6 +109,7 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 - **Noise gate**: targets with all three relaunch lines disabled no longer generate event records at all
 - **Auto-mute for "dies right after launch"**: three consecutive relaunches that survive less than 30 seconds each pause that event type until the app starts surviving again
 - **Events moved to their own page**: the event feed is now a dedicated tab with type filters instead of sitting at the bottom of the home page
+- **Termination exemption is now permanent**: swiping the card away, force-stopping or one-tap cleanup stops relaunching for that app with no 60-second window and no automatic resume — keep-alive resumes only when you reopen the app. A “auto-relaunch paused” event marks it in the feed
 
 **Bug fixes**
 
@@ -117,6 +118,7 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 - **After one kill the app needed a manual launcher tap to come back**: same root cause — with no main process there is no death callback, so the first line of defence silently stopped working. Fixed together with the main-process check
 - **Per-clone defence settings were overridden by the main package**: when the userId could not be parsed the override lookup fell back to the main package's config, so a clone's independent settings were ignored. The two are now completely separate with no fallback
 - **Pause-keepalive did not actually pause**: paused packages merely disappeared from the list while the module kept relaunching, intercepting and logging them. Paused packages are now excluded from the delivered target set, so the module never touches them
+- **A manually swiped-away target came back 60 seconds later**: the old exemption expired after 60s and relaunching resumed on its own. The exemption is now permanent and only you reopening the app restores keep-alive
 
 **UI polish**
 
