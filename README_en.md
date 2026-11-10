@@ -129,8 +129,7 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 - **4th relaunch route** (`ProcessList.startProcessLocked`): correct class and arguments; gives up
   quietly on ROMs that do not support it.
 - **Log size**: freeze diagnostics now aggregate per reason, once per 10 minutes.
-- **debug build**: target-app ANR now auto-captures the scene; game frame drops are still not
-  measurable (no frame stats are collected).
+- **debug build**: target-app ANR now auto-captures the scene.
 
 ### v3.5.0 (build 4232)
 **New features**

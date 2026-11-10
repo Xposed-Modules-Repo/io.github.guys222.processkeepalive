@@ -128,7 +128,6 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # 值越低越不容易被杀
 
 **debug 包新增「卡死」抓现场** —— 之前三个自动抓点全是为白屏选的，应用 ANR（卡死）时一个都不触发。
 现在挂了 `AMS.appNotResponding`，目标应用一 ANR 就自动存主线程栈 / CPU / 内存 / 系统 ANR 记录。
-（游戏前台卡顿仍然抓不到：模块不采帧数据，只能靠 CPU 与内存间接排除。）
 
 ### v3.5.0（build 4232）
 **新增功能**
