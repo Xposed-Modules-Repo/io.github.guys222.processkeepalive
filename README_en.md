@@ -14,8 +14,17 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-the latest APK (e.g. `PKA-v3.5.0-build4232.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
+the latest APK (e.g. `PKA-v3.5.2-build4363.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
 (signed with the project's own keystore, installs over previous builds).
+
+Every release ships **two** files; they are functionally identical:
+
+- `PKA-v<version>-build<num>.apk` — the normal build, for everyone;
+- `PKA-v<version>-build<num>-debug.apk` — **install this one if you have a problem**: on white
+  screen, ANR (hang) or a failed relaunch it saves the scene to `/data/system/pka_hook.log`,
+  which goes into the diagnostics package. Same key, they install over each other.
+
+**Reboot after installing** — hooks live in the system framework; until then the old code runs.
 
 After enabling the module you **must** tick the "**System framework (android)**" scope in LSPosed — all hooks are injected into `system_server`, and nothing works without it.
 
@@ -23,7 +32,18 @@ After enabling the module you **must** tick the "**System framework (android)**"
 
 ## UI
 
-Four bottom tabs: **Home / Apps / Processes / Settings**, with dark / light / follow-system themes and a 4×1 home-screen widget.
+Five bottom tabs: **Apps / Home / Events / Processes / Settings**, with dark / light / follow-system themes and a 4×1 home-screen widget.
+
+| Apps | Home | Events |
+| --- | --- | --- |
+| ![Apps](app.jpg) | ![Home](home.jpg) | ![Events](events.jpg) |
+
+| Processes | Settings |
+| --- | --- |
+| ![Processes](processes.jpg) | ![Settings](settings.jpg) |
+
+- **Events** — guard event timeline (killed / relaunched / died young / user-stopped) with type
+  filters, CSV export by long-pressing refresh, and a 24-hour survival sparkline.
 
 | Home | Apps | Processes | Settings |
 | --- | --- | --- | --- |
@@ -98,6 +118,19 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 ```
 
 ## Changelog
+
+### v3.5.2 (build 4363)
+
+- **Fixed white screen.** Screen keep-alive kept an ActivityRecord whose host process was gone;
+  that record is an empty shell — the window is created but nothing can draw into it, and the
+  system reuses it when you tap the icon. Keep-alive now only keeps records whose process is alive.
+- **Fixed "app stays in the foreground after being pulled back".** The old guard ("skip sending
+  back if the UI is ready") was always true, because the wait loop only exits once the UI is ready.
+- **4th relaunch route** (`ProcessList.startProcessLocked`): correct class and arguments; gives up
+  quietly on ROMs that do not support it.
+- **Log size**: freeze diagnostics now aggregate per reason, once per 10 minutes.
+- **debug build**: target-app ANR now auto-captures the scene; game frame drops are still not
+  measurable (no frame stats are collected).
 
 ### v3.5.0 (build 4232)
 **New features**
