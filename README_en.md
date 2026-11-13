@@ -14,7 +14,7 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-the latest APK (e.g. `PKA-v3.5.2-build4363.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
+the latest APK (e.g. `PKA-v3.6.0-build4429.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
 (signed with the project's own keystore, installs over previous builds).
 
 Every release ships **two** files; they are functionally identical:
@@ -118,6 +118,22 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 ```
 
 ## Changelog
+
+### v3.6.0 (build 4429)
+
+- First launch after a reboot crashed: package-state write lacked DONT_KILL_APP
+- "Boot auto-start" had no effect: polling pulled targets regardless — now skipped when never seen running and auto-start is off
+- Killed right after being frozen: added the `ProcessList.setProcessFrozen` sink; a persistent flag alone now counts as protection
+- Orphan-record guard was dead on merged AMS/ATMS ROMs: reuse the AMS instance directly
+- Returning from background showed a frozen screenshot layer that swallowed taps: page keep-alive no longer blocks stopping/finish, so the state machine completes; pages survive because the process survives
+- White screen after being killed: page keep-alive now only protects pages of live processes
+- Empty app list when the ROM withholds the "installed apps" permission: enumerated system-side and pushed via heartbeat
+- Guard badges completed (boot start / no re-pull / card lock / paused); paused targets show only "Paused"
+- App icons got a rounded mask, fixing the "missing corner" look caused by transparent padding in the artwork
+- Events page rebuilt: per-app causal chain, raw log per event, paragraph-separated explanations
+- All dialogs became bottom sheets; per-app detail split into Overview / Strategy / Capabilities
+- New hang watchdog (debug builds only): captures a stack on main-thread D-state, busy-wait, or input timeout
+- Fixed updates occasionally downloading the debug build
 
 ### v3.5.2 (build 4363)
 
