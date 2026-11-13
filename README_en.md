@@ -14,7 +14,7 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-the latest APK (e.g. `PKA-v3.5.2-build4363.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
+the latest APK (e.g. `PKA-v3.6.0-build4428.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
 (signed with the project's own keystore, installs over previous builds).
 
 Every release ships **two** files; they are functionally identical:
@@ -118,6 +118,49 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 ```
 
 ## Changelog
+
+### v3.6.0 (build 4428)
+
+**Process keeping**
+
+- **First launch after reboot crashed (second launch fine)**: the launcher-icon calibration set the package enabled on every start without `DONT_KILL_APP`, so the system killed the running process. It now reads the current state first and skips the write when it already matches.
+- **"Boot start" did nothing**: previously the polling defense pulled every target ~40-50 s after boot regardless. Targets that have not run since boot and do not have "Boot start" enabled are now left alone; normal guarding resumes after you open them once. (Resident alone no longer implies boot start.)
+- **Killed after being frozen**: cause was `Sync transaction while frozen`. Only `freezeAppAsync` was intercepted; the real sink `ProcessList.setProcessFrozen` is now hooked too, and processes carrying the persistent flag are treated as protected (covers the window before config loads at boot).
+- **Orphan-record guard fully broken on merged-class ROMs**: those ROMs merge AMS and ATMS into one class, while the code still looked for ATMS inside AMS. The AMS instance is now reused directly.
+- **White screen when reopening a killed app**: the page-keeping hook blocked "go to background / finish", assuming the record could bring the page back. Once the process dies the record is a shell — still registered, but nothing can draw into it. Opening the app reused exactly that shell. Now only live processes keep their pages.
+- **App list empty when the ROM denies "read installed apps"**: hooks run in system_server and are unaffected, but the UI is a normal app. system_server now enumerates the list and pushes it with the heartbeat.
+- **Guard badges incomplete**: added "Boot start / Respect manual kill / Card lock / Paused". "Paused" was the worst — paused apps are no longer pulled or intercepted, yet the list still showed all capabilities. A paused app now shows a single grey "Paused" badge.
+- **App icons looked clipped**: adaptive icons only draw a square base; the launcher is supposed to mask them. Inserted directly into an ImageView they exposed right angles. Now masked to 25% rounded corners and the asset's own transparent padding is trimmed.
+
+**Events page rebuilt**
+
+- **Full causal chain**: tapping any event shows every event for that app since boot, connected in time order, with the tapped one highlighted; a "boot + interval" node is prepended when the chain starts before boot.
+- **Grouped by app**: the four type filters became "All / each target" with icon and count. With a causal chain, filtering by type is redundant.
+- **Each event carries its own raw log**: 2-3 related lines (filtered by package name), up to 400 chars, newlines preserved, truncated only at line boundaries.
+- **Descriptions split into paragraphs**: long explanations broken into conclusion / two possibilities / how to narrow it down, with spacing.
+
+**UI**
+
+- **All dialogs became bottom sheets**: slide up from the bottom, rounded top, grabber and scrim, animated.
+- **Guarded-app detail redesigned**: 13 switches no longer fit on one screen, so it is split into Overview / Strategy / Capabilities tabs. Each switch shows a top countdown hint after toggling.
+- **Switch colour unified to green** (was a mix of green and blue).
+- **The dialer code no longer rewrites the "hide launcher icon" switch**; after toggling visibility system_server sends `PACKAGE_CHANGED` so the launcher refreshes.
+- **Removed duplicated panels**: home "guarded this boot", home "kills / avg recovery" bars, app-dialog "recent events", dialog "kill reason distribution", summary "recent boots".
+
+**Diagnostics**
+
+- **Hang watchdog (debug builds only)**: samples each target's main thread every 5 s — `D` state for 10 s (IO hang), `R` without CPU progress for 20 s (busy loop), or 5 s of unhandled input. A snapshot is written on hit.
+- **A "resident at boot" event is now recorded** on the first persistent mark; the empty state also explains that resident alone does not pull at boot.
+- **Log hygiene**: freeze skip buckets summarised by reason every 10 minutes; per-line cap 400 chars, filtered by package, newlines preserved.
+
+**Updates**
+
+- **Fixed "update downloaded the debug APK"**: with both APKs in a release, `-debug.apk` sorts first alphabetically and the first match was taken. The release build is now preferred.
+- **The update debug panel is gone from release builds**: it was triggered by tapping the version row five times and had a hard-coded old tag, which could reinstall a historic version. Debug builds only now, with a dynamic tag.
+
+**About "card lock"**
+
+Behaviour matches build 4363: a locked card cannot be swiped away — it bounces back and the page is kept. This version does not make the card disappear after swiping; several approaches failed on real devices, so it is left as-is rather than shipping a half-working feature.
 
 ### v3.5.2 (build 4363)
 
