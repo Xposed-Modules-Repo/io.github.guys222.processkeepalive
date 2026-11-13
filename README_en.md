@@ -14,7 +14,7 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-the latest APK (e.g. `PKA-v3.6.0-build4426.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
+the latest APK (e.g. `PKA-v3.5.2-build4363.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
 (signed with the project's own keystore, installs over previous builds).
 
 Every release ships **two** files; they are functionally identical:
@@ -118,45 +118,6 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 ```
 
 ## Changelog
-
-### v3.6.0 (build 4426)
-
-Cumulative update from build 4363. **A reboot is required after installing.**
-
-**Keep-alive**
-
-- **Crash on the first launch after a reboot**: the launcher-icon sync called `setApplicationEnabledSetting` on every start without `DONT_KILL_APP`, so the system killed the running process. It now reads the state first, writes only when needed, and passes the flag
-- **"Boot start" was a no-op**: the polling line pulled every target 40-50s after boot regardless of the switch. Targets never seen running in this boot, with "Boot start" off, are no longer touched by either line ("Resident" alone no longer means boot start)
-- **Killed after being frozen** (`Sync transaction while frozen`): only `freezeAppAsync` was hooked, which most freezes do not go through. Added the real sink `ProcessList.setProcessFrozen`; a process carrying the resident flag is now protected too
-- **Orphan-record guard fully broken on merged-class ROMs**: those ROMs merge AMS and ATMS into one class, while the code still searched for ATMS inside AMS. It now reuses the AMS instance
-- **White screen after being killed**: page keep-alive now only keeps pages of living processes
-- **Empty app list when the ROM denies "read installed apps"**: system_server now enumerates and pushes the list via heartbeat, and the UI shows why it is incomplete
-- **Missing guard badges**: added "Boot start / Termination exemption / Card lock / Paused". A paused app used to keep showing "Resident / Page keep-alive" while it was in fact not being kept alive at all
-- **Icon corners**: adaptive icons only paint a square plate; the mask was the launcher's job. Now masked with 25% corners and trimmed of built-in transparent padding
-
-**Events page**
-
-- **Full causal chain**: tapping any event shows every event of that app in this boot, connected in time order, with the tapped one highlighted
-- **Grouped by app** instead of four type filters ("All / each target", with icons and counts)
-- **Each event carries its own raw log**: filtered by package, up to 400 chars, line breaks preserved
-- **Long descriptions split into paragraphs**; collapsed state clamps to two lines
-- **Durations** shown as `20m 41s`, and days appear when applicable
-
-**UI**
-
-- All dialogs are now bottom sheets
-- The guard-app detail sheet is split into **Overview / Strategy / Capabilities**, so 13 switches fit on one screen; every toggle shows a top countdown hint
-- Switch color unified to green
-- The dialer code no longer silently turns off "Hide launcher icon"; a `PACKAGE_CHANGED` broadcast is sent after icon visibility changes
-- Removed 5 duplicated displays
-
-**Diagnostics**
-
-- debug build adds a **hang watchdog**: `D` state ≥10s, `R` without CPU progress ≥20s, or no input dispatch for 5s → capture the stack
-- One "resident from boot (not a relaunch)" event is recorded on the first marking of each boot
-- Logs are aggregated by reason; single entry capped at 400 chars
-
-**About "Card lock"**: behavior is unchanged from 4363 — the card cannot be swiped away and snaps back, while the page stays alive. This release does not turn it into "hidden after swipe"; every approach tried failed on real devices, and a half-working version was not shipped.
 
 ### v3.5.2 (build 4363)
 
