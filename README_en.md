@@ -30,6 +30,8 @@ After enabling the module you **must** tick the "**System framework (android)**"
 
 > Optional: also ticking the module itself is only used for the live "module activated" indicator on the home tab. It does not affect keep-alive.
 
+> ☕ The module is free forever. If it solved a problem for you, [you can buy the author a coffee here](#donation).
+
 ## UI
 
 Five bottom tabs: **Apps / Home / Events / Processes / Settings**, with dark / light / follow-system themes and a 4×1 home-screen widget.
@@ -340,9 +342,24 @@ to the main package, synthetic memory reclaim conflicting with page keep-alive, 
 
 ## Donation
 
-If this module helped you, feel free to give it a Star ⭐
+**Every feature is free, forever** — no tiers, no locked switches, no paywall. You get the full module either way.
 
-![WeChat QR](wechat.jpg)
+So this isn't a price tag, it's support. The QR below is the project's only source of income, and it goes to:
+
+- Test devices (one real phone per ROM family — HyperOS / ColorOS / LineageOS — replaced as Android moves on)
+- Chasing down broken hook points after every major system update
+- GitHub Actions, download traffic, domain
+
+Any amount works (the equivalent of a coffee is plenty). One-time payment, **no auto-renewal**.
+
+<img src="wechat.jpg" alt="WeChat payment QR" width="280">
+
+Just scan and pay — no friend request, no group, no contact info needed.
+
+Happy not to pay? These help just as much:
+
+- Star the source repo: <https://github.com/Guys222/ProcessKeepAlive>
+- Attach a diagnostic package (Settings → Export diagnostics) when reporting a bug — it saves me several rounds of guessing
 
 ## License
 
