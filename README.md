@@ -14,7 +14,7 @@
 
 在 LSPosed Manager 中搜索「进程保活」安装，或从
 [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases) 下载最新 APK
-（如 `PKA-v3.6.0-build4429.apk`，已用项目专用 keystore 签名，可直接覆盖安装）。
+（如 `PKA-v3.6.1-build4453.apk`，已用项目专用 keystore 签名，可直接覆盖安装）。
 
 每个版本都发**两个包**，功能完全一样：
 
@@ -107,6 +107,16 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # 值越低越不容易被杀
 ```
 
 ## 更新日志
+
+### v3.6.1（build 4453）
+
+- system_server 崩溃、LSPosed 进安全模式：`destroyIfPossible` 返回 boolean 却回传 Integer，改为按声明类型补值并加返回值类型对账
+- 划掉卡片后卡片不消失：补挂国产 ROM 私有移除收口 + 按调用栈判定，不再把销毁拦成空壳
+- 应用单独设置里取消勾选、点取消后改动仍生效：弹窗改为操作配置副本，确定才写回
+- 单应用「开机拉起」开了无效：钩子读不到模块配置，改由 ConfigProvider 下发
+- WiFi 高性能锁 / 网络痉挛急救 / 后台静默三个键从未下发、永远取默认值，已补齐
+- 新增「待机省电」三档：只在灭屏降频与释放 WiFi 锁，亮屏全速
+- 后台静默新增独立开关，并支持按通知渠道放行
 
 ### v3.6.0（build 4429）
 
