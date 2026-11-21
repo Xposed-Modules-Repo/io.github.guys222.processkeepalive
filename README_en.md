@@ -14,7 +14,7 @@ An LSPosed / Xposed-based Android background keep-alive module, mainly targeting
 ## Install
 
 Search for "进程保活" in LSPosed Manager, or download
-the latest APK (e.g. `PKA-v3.6.0-build4429.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
+the latest APK (e.g. `PKA-v3.6.1-build4469.apk`) from [Releases](https://github.com/Xposed-Modules-Repo/io.github.guys222.processkeepalive/releases)
 (signed with the project's own keystore, installs over previous builds).
 
 Every release ships **two** files; they are functionally identical:
@@ -120,6 +120,16 @@ adb shell "cat /proc/<pid>/oom_score_adj"      # lower = less likely to be kille
 ```
 
 ## Changelog
+
+### v3.6.1 (build 4469)
+
+- Fixed "still shows update available after installing the latest": a leftover version-number issue from old builds; the prompt disappears after upgrading and rebooting
+- MIUI and similar ROMs dropping messages after screen off: fixed power-save throttling of the network patrol that left background apps disconnected
+- Memory bloat with multiple cloned apps: fixed priority being clamped uniformly across instances
+- Gesture Back exited the whole app from settings dialogs: now only dismisses the dialog
+- Stale capability tags on the Events page after un-guarding an app: now shows "Not guarded"
+- Process page cleanup: removed stray dividers, the "group by app" header, and empty sort cards
+- New "Launch queue" advanced setting: apps to launch are started one by one with a configurable gap (0.5-30 s) to avoid stutter on slow devices
 
 ### v3.6.0 (build 4429)
 
